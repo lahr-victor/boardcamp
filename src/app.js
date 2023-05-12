@@ -4,10 +4,14 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 
+// VALUE IMPORTS
+import router from './routes/index.route.js';
+
 // SERVER CONFIG
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(router);
 dotenv.config();
 
 // FUNCTIONS
