@@ -2,7 +2,7 @@
 import { Router } from 'express';
 
 // VALUE IMPORTS
-import { retrieveGames } from '../controllers/games.controller.js';
+import retrieveGames from '../controllers/games.controller.js';
 
 // GLOBAL CONSTANTS
 const gamesRouter = Router();

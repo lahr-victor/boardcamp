@@ -8,7 +8,7 @@
     "es6": true
   },
   "rules": {
-    "import/extensions": "ignorePackages",
+    "import/extensions": "off",
     "no-console": "off"
   }
 }
