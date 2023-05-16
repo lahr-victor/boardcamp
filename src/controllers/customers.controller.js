@@ -29,3 +29,44 @@ export async function retrieveCustomerById(req, res) {
     return res.status(500).send(error.message);
   }
 }
+
+export async function registerCustomer(req, res) {
+  const {
+    name,
+    phone,
+    cpf,
+    birthday,
+  } = req.body;
+
+  try {
+    const customers = await db.query(`
+      SELECT cpf FROM customers;
+    `);
+    if (customers.rows.find((customer) => (customer.cpf === cpf))) {
+      return res.status(409).send('This customer is already registered!');
+    }
+
+    await db.query(`
+      INSERT INTO customers (
+        name, 
+        phone, 
+        cpf, 
+        birthday
+      )
+      VALUES (
+        $1,
+        $2,
+        $3,
+        $4
+      );
+    `, [
+      name,
+      phone,
+      cpf,
+      birthday,
+    ]);
+    return res.sendStatus(201);
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+}
