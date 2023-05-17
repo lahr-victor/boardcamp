@@ -136,3 +136,25 @@ export async function finishRental(req, res) {
     return res.status(500).send(error.message);
   }
 }
+
+export async function unregisterRental(req, res) {
+  const id = parseInt(req.params.id, 10);
+  if (id.isNaN) return res.sendStatus(400);
+
+  try {
+    const rental = await db.query(`
+      SELECT * FROM rentals WHERE id = $1;
+      `, [id]);
+
+    if (!rental.rows[0]) return res.sendStatus(404);
+
+    if (!rental.rows[0].returnDate) return res.sendStatus(400);
+
+    await db.query(`
+    DELETE FROM rentals WHERE id = $1;
+  `, [id]);
+    return res.sendStatus(200);
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+}

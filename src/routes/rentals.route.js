@@ -6,6 +6,7 @@ import {
   finishRental,
   retrieveRentals,
   registerRental,
+  unregisterRental,
 } from '../controllers/rentals.controller.js';
 
 // GLOBAL CONSTANTS
@@ -15,6 +16,7 @@ const rentalsRouter = Router();
 rentalsRouter.post('/rentals/:id/return', finishRental);
 rentalsRouter.get('/rentals', retrieveRentals);
 rentalsRouter.post('/rentals', registerRental);
+rentalsRouter.delete('/rentals/:id', unregisterRental);
 
 // VALUE EXPORTS
 export default rentalsRouter;
