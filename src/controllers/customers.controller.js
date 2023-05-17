@@ -1,3 +1,6 @@
+// PACKAGE IMPORTS
+import dayjs from 'dayjs';
+
 // VALUE IMPORTS
 import db from '../database/database.connection.js';
 
@@ -7,7 +10,9 @@ export async function retrieveCustomers(req, res) {
     const customers = await db.query(`
       SELECT * FROM customers;
     `);
-    res.send(customers.rows);
+    res.send(customers.rows.map((customer) => ({
+      ...customer, birthday: dayjs(customer.birthday).format('YYYY-MM-DD'),
+    })));
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -24,7 +29,7 @@ export async function retrieveCustomerById(req, res) {
 
     if (!customer.rows[0]) return res.sendStatus(404);
 
-    return res.send(customer.rows[0]);
+    return res.send({ ...customer.rows[0], birthday: dayjs(customer.rows[0].birthday).format('YYYY-MM-DD') });
   } catch (error) {
     return res.status(500).send(error.message);
   }

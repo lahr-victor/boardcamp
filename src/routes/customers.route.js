@@ -16,7 +16,7 @@ const customersRouter = Router();
 
 // FUNCTIONS
 customersRouter.get('/customers', retrieveCustomers);
-customersRouter.get('/customer/:id', retrieveCustomerById);
+customersRouter.get('/customers/:id', retrieveCustomerById);
 customersRouter.post('/customers', validateSchema(customerSchema), registerCustomer);
 customersRouter.put('/customers/:id', validateSchema(customerSchema), updateCustomer);
 
