@@ -70,3 +70,46 @@ export async function registerCustomer(req, res) {
     return res.status(500).send(error.message);
   }
 }
+
+export async function updateCustomer(req, res) {
+  const id = parseInt(req.params.id, 10);
+  if (id.isNaN) return res.sendStatus(400);
+
+  const {
+    name,
+    phone,
+    cpf,
+    birthday,
+  } = req.body;
+
+  try {
+    const customers = await db.query(`
+      SELECT id, cpf FROM customers;
+    `);
+    if (!customers.rows.find((customer) => ((customer.id === id)))) {
+      return res.sendStatus(404);
+    }
+    if (customers.rows.find((customer) => ((customer.cpf === cpf) && (customer.id !== id)))) {
+      return res.status(409).send('This CPF is already registered!');
+    }
+
+    await db.query(`
+      UPDATE customers 
+        SET
+          name = $1, 
+          phone = $2, 
+          cpf = $3, 
+          birthday = $4
+        WHERE id = $5;
+    `, [
+      name,
+      phone,
+      cpf,
+      birthday,
+      id,
+    ]);
+    return res.sendStatus(200);
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+}
