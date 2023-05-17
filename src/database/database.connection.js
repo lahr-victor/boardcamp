@@ -11,5 +11,7 @@ const databaseConfig = {
   connectionString: process.env.DATABASE_URL,
 };
 
+if (process.env.MODE === 'prod') databaseConfig.ssl = true;
+
 const db = new Pool(databaseConfig);
 export default db;
